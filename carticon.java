@@ -24,9 +24,10 @@ public void addtocartbadge() throws IOException {
 	 AC.Productmultiselection();
 	 
 	 
-	String ICON =  productspageobj.Cartbadgefunction.getText();
-	System.out.println("Cart products count :" + ICON);
+	String ICON =  productspageobj.Cartbadgefunction.getText().trim();
 	productspageobj.Cartfunction.click();
+	
+	int badgecountbefore_refersh = Integer.parseInt(ICON);
 	 
      if(ICON.isEmpty()|| ICON.equalsIgnoreCase("0")) {
 		
@@ -35,20 +36,31 @@ public void addtocartbadge() throws IOException {
 		
 	}else {
 		
-		System.out.println("cart count" + ICON);
-		
-		
+		System.out.println("cart badgecount" + badgecountbefore_refersh);
 		
 	}
-		 
+     driver.navigate().refresh(); //refershing the page 
+     
+     String after_refresh = productspageobj.Cartbadgefunction.getText().trim();
+ 	
+		int badgecountafter_refresh =Integer.parseInt(after_refresh);
+		
+		 Assert.assertEquals(badgecountbefore_refersh, badgecountafter_refresh," Count not remains same");
+		  
+   List<WebElement> items =  driver.findElements(By.className("inventory_item_name"));
+ 
+     int elements = items.size();
+   
+     System.out.println("Number of products added to cart : " + elements);
+     
+  
+     Assert.assertEquals(elements, badgecountafter_refresh," Count mismatch ");
+    
 	 }
 	    
 	
 	
-	
-	
-	
-	}
+}
 	
 	
 	
